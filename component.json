@@ -1,0 +1,10 @@
+{
+  "name": "move-element",
+  "version": "0.0.1",
+  "dependencies": {
+    "component/range-at-xy": "0.0.1",
+    "component/split-at-range": "0.0.2",
+    "component/classes": "1.2.1"
+  },
+  "scripts": [ "index.js" ]
+}
