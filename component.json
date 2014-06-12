@@ -1,6 +1,7 @@
 {
   "name": "drag-element",
   "version": "0.0.1",
+  "description": "Reorder elements via drag and drop",
   "dependencies": {
     "component/range-at-xy": "0.0.1",
     "component/split-at-range": "0.0.2",
