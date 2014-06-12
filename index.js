@@ -1,6 +1,7 @@
 var atxy = require('range-at-xy');
 var split = require('split-at-range');
 var classes = require('classes');
+var debug = require('debug')('drag');
 
 // Region in px on the top and on the bottom of elements excluded
 // from the 'inside' destination mode.
@@ -40,59 +41,64 @@ Drag.prototype.start = function(el, mode) {
 Drag.prototype.update = function(el, x, y) {  
   if (!this.dragging) return;
   if (el == this.container) return;
-  while (el.parentNode != this.container) {
-    el = el.parentNode; 
+  try {
+    while (el.parentNode != this.container) {
+      el = el.parentNode; 
+    }
+    if (el == this.source.element) return;
+    this.destination.element = el;
+    var range = this.destination.range = atxy(el, x, y);
+    var rect = el.getBoundingClientRect();
+    if (range) {
+      if (y <= rect.top + DROP_PADDING) {
+        this.destination.mode = 'before';
+      } else if (y >= rect.bottom - DROP_PADDING) {
+        this.destination.mode = 'after';
+      } else if (range.startOffset == 0) {
+        this.destination.mode = 'before';
+      } else {
+        this.destination.mode = 'inside';
+      }
+    } else {
+      if (y < (rect.top + rect.bottom) / 2) {
+        this.destination.mode = 'before';
+      } else {
+        this.destination.mode = 'after';
+      }
+    }
+    var drect = this.display.getBoundingClientRect();
+    if (this.destination.mode == 'before') {
+      if (el.previousElementSibling) {
+        var prect = el.previousElementSibling.getBoundingClientRect();
+        this.cursor.style.top = ((rect.top + prect.bottom) / 2 - drect.top) + 'px';
+      } else {
+        this.cursor.style.top = (rect.top - drect.top) + 'px';
+      }
+      this.cursor.style.left = (rect.left - drect.left) + 'px'; 
+      this.cursor.style.height = '2px';
+      this.cursor.style.width = rect.width + 'px';
+    } else if (this.destination.mode == 'after') {
+      if (el.nextSibling) {
+        var nrect = el.nextElementSibling.getBoundingClientRect();
+        this.cursor.style.top = ((rect.bottom + nrect.top) / 2 - drect.bottom) + 'px';
+      } else {
+        this.cursor.style.top = (rect.bottom - drect.bottom - 2) + 'px';
+      }
+      this.cursor.style.left = (rect.left - drect.left) + 'px'; 
+      this.cursor.style.height = '2px';
+      this.cursor.style.width = rect.width + 'px';
+    } else if (this.destination.mode == 'inside') {
+      var rrect = this.destination.range.getBoundingClientRect();
+      this.cursor.style.left = (rrect.left - drect.left) + 'px';
+      this.cursor.style.top = (rrect.top - drect.top - 3) + 'px';
+      this.cursor.style.width = '2px';
+      this.cursor.style.height = rrect.height + 6 + 'px';
+    }
+    this.cursor.style.display = '';
+  } catch (e) {
+    debug('update exception: ' + e.message);
+    this.cursor.style.display = 'none';
   }
-  if (el == this.source.element) return;
-  this.destination.element = el;
-  var range = this.destination.range = atxy(el, x, y);
-  var rect = el.getBoundingClientRect();
-  if (range) {
-    if (y <= rect.top + DROP_PADDING) {
-      this.destination.mode = 'before';
-    } else if (y >= rect.bottom - DROP_PADDING) {
-      this.destination.mode = 'after';
-    } else if (range.startOffset == 0) {
-      this.destination.mode = 'before';
-    } else {
-      this.destination.mode = 'inside';
-    }
-  } else {
-    if (y < (rect.top + rect.bottom) / 2) {
-      this.destination.mode = 'before';
-    } else {
-      this.destination.mode = 'after';
-    }
-  }
-  var drect = this.display.getBoundingClientRect();
-  if (this.destination.mode == 'before') {
-    if (el.previousElementSibling) {
-      var prect = el.previousElementSibling.getBoundingClientRect();
-      this.cursor.style.top = ((rect.top + prect.bottom) / 2 - drect.top) + 'px';
-    } else {
-      this.cursor.style.top = (rect.top - drect.top) + 'px';
-    }
-    this.cursor.style.left = (rect.left - drect.left) + 'px'; 
-    this.cursor.style.height = '2px';
-    this.cursor.style.width = rect.width + 'px';
-  } else if (this.destination.mode == 'after') {
-    if (el.nextSibling) {
-      var nrect = el.nextElementSibling.getBoundingClientRect();
-      this.cursor.style.top = ((rect.bottom + nrect.top) / 2 - drect.bottom) + 'px';
-    } else {
-      this.cursor.style.top = (rect.bottom - drect.bottom - 2) + 'px';
-    }
-    this.cursor.style.left = (rect.left - drect.left) + 'px'; 
-    this.cursor.style.height = '2px';
-    this.cursor.style.width = rect.width + 'px';
-  } else if (this.destination.mode == 'inside') {
-    var rrect = this.destination.range.getBoundingClientRect();
-    this.cursor.style.left = (rrect.left - drect.left) + 'px';
-    this.cursor.style.top = (rrect.top - drect.top - 3) + 'px';
-    this.cursor.style.width = '2px';
-    this.cursor.style.height = rrect.height + 6 + 'px';
-  }
-  this.cursor.style.display = '';
 }
 
 Drag.prototype.cancel = function() {
@@ -108,28 +114,32 @@ Drag.prototype.commit = function() {
   if (!this.dragging) return;
   if (!this.destination.element) return this.cancel();
   classes(this.source.element).remove('dragging');
-  var dest = this.destination.element;
-  var el;
-  if (this.source.mode == 'move') {
-    el = this.source.element;
-  } else {
-    el = this.source.element.cloneNode(true);
-  }
-  if (this.destination.mode == 'before') {
-    this.container.insertBefore(el, dest);
-  } else if (this.destination.mode == 'after') {
-    var next;
-    if (next = dest.nextSibling) {
-      this.container.insertBefore(el, next);
+  try {
+    var dest = this.destination.element;
+    var el;
+    if (this.source.mode == 'move') {
+      el = this.source.element;
     } else {
-      this.container.appendChild(el);
+      el = this.source.element.cloneNode(true);
     }
-  } else if (this.destination.mode == 'inside') {
-    var parts = split(dest, this.destination.range);
-    this.container.insertBefore(parts[0], dest);
-    this.container.insertBefore(el, dest);
-    this.container.insertBefore(parts[1], dest);
-    this.container.removeChild(dest);
+    if (this.destination.mode == 'before') {
+      this.container.insertBefore(el, dest);
+    } else if (this.destination.mode == 'after') {
+      var next;
+      if (next = dest.nextSibling) {
+        this.container.insertBefore(el, next);
+      } else {
+        this.container.appendChild(el);
+      }
+    } else if (this.destination.mode == 'inside') {
+      var parts = split(dest, this.destination.range);
+      this.container.insertBefore(parts[0], dest);
+      this.container.insertBefore(el, dest);
+      this.container.insertBefore(parts[1], dest);
+      this.container.removeChild(dest);
+    }
+  } catch (e) {
+    debug('commit exception: ' + e.message);
   }
   this.source.element = null;
   this.dragging = false;
