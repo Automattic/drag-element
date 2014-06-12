@@ -66,12 +66,22 @@ Drag.prototype.update = function(el, x, y) {
   }
   var drect = this.display.getBoundingClientRect();
   if (this.destination.mode == 'before') {
-    this.cursor.style.top = (rect.top - drect.top) + 'px';
+    if (el.previousElementSibling) {
+      var prect = el.previousElementSibling.getBoundingClientRect();
+      this.cursor.style.top = ((rect.top + prect.bottom) / 2 - drect.top) + 'px';
+    } else {
+      this.cursor.style.top = (rect.top - drect.top) + 'px';
+    }
     this.cursor.style.left = (rect.left - drect.left) + 'px'; 
     this.cursor.style.height = '2px';
     this.cursor.style.width = rect.width + 'px';
   } else if (this.destination.mode == 'after') {
-    this.cursor.style.top = (rect.bottom - drect.bottom - 2) + 'px';
+    if (el.nextSibling) {
+      var nrect = el.nextElementSibling.getBoundingClientRect();
+      this.cursor.style.top = ((rect.bottom + nrect.top) / 2 - drect.bottom) + 'px';
+    } else {
+      this.cursor.style.top = (rect.bottom - drect.bottom - 2) + 'px';
+    }
     this.cursor.style.left = (rect.left - drect.left) + 'px'; 
     this.cursor.style.height = '2px';
     this.cursor.style.width = rect.width + 'px';
