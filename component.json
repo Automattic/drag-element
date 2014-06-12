@@ -4,7 +4,8 @@
   "dependencies": {
     "component/range-at-xy": "0.0.1",
     "component/split-at-range": "0.0.2",
-    "component/classes": "1.2.1"
+    "component/classes": "1.2.1",
+    "visionmedia/debug": "1.0.2"
   },
   "scripts": [ "index.js" ]
 }
