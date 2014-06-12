@@ -1,0 +1,9 @@
+{
+  "name": "drag-element",
+  "version": "0.0.1",
+  "description": "Reorder elements via drag and drop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Automattic/drag-element.git"
+  }
+}
