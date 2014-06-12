@@ -1,5 +1,5 @@
 {
-  "name": "move-element",
+  "name": "drag-element",
   "version": "0.0.1",
   "dependencies": {
     "component/range-at-xy": "0.0.1",
