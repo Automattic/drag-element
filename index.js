@@ -1,6 +1,6 @@
 var atxy = require('range-at-xy');
 var split = require('split-at-range');
-var emitter = require('emitter');
+var Emitter = require('emitter');
 var debug = require('debug')('drag');
 
 // Region in px on the top and on the bottom of elements excluded
