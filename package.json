@@ -1,6 +1,6 @@
 {
   "name": "drag-element",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Reorder elements via drag and drop",
   "repository": {
     "type": "git",
