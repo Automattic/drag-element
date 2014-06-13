@@ -5,6 +5,7 @@
   "dependencies": {
     "component/range-at-xy": "0.0.1",
     "component/split-at-range": "0.0.2",
+    "component/emitter": "1.1.2",
     "visionmedia/debug": "1.0.2"
   },
   "scripts": [ "index.js" ]

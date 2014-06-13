@@ -1,5 +1,6 @@
 var atxy = require('range-at-xy');
 var split = require('split-at-range');
+var emitter = require('emitter');
 var debug = require('debug')('drag');
 
 // Region in px on the top and on the bottom of elements excluded
@@ -28,12 +29,15 @@ function Drag(container) {
   this.display.appendChild(this.cursor);
 }
 
+Emitter(Drag.prototype);
+
 Drag.prototype.start = function(el, mode) {
   if (this.dragging) return;
   this.dragging = true;
   this.source.element = el;
   this.source.mode = mode || 'move';
   this.container.style.cursor = 'move'; 
+  this.emit('start', el);
 }
 
 Drag.prototype.update = function(el, x, y) {  
@@ -101,6 +105,7 @@ Drag.prototype.update = function(el, x, y) {
 
 Drag.prototype.cancel = function() {
   if (!this.dragging) return;
+  this.emit('cancel', this.source.element);
   this.source.element = null;
   this.dragging = false;
   this.cursor.style.display = 'none';
@@ -110,6 +115,7 @@ Drag.prototype.cancel = function() {
 Drag.prototype.commit = function() {
   if (!this.dragging) return;
   if (!this.destination.element) return this.cancel();
+  this.emit('commit', this.source.element);
   try {
     var dest = this.destination.element;
     var el;
