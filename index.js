@@ -113,6 +113,7 @@ Drag.prototype.cancel = function() {
 }
 
 Drag.prototype.commit = function() {
+  var parts;
   if (!this.dragging) return;
   if (!this.destination.element) return this.cancel();
   try {
@@ -133,7 +134,7 @@ Drag.prototype.commit = function() {
         this.container.appendChild(el);
       }
     } else if (this.destination.mode == 'inside') {
-      var parts = split(dest, this.destination.range);
+      parts = split(dest, this.destination.range);
       this.container.insertBefore(parts[0], dest);
       this.container.insertBefore(el, dest);
       this.container.insertBefore(parts[1], dest);
@@ -142,7 +143,7 @@ Drag.prototype.commit = function() {
   } catch (e) {
     debug('commit exception: ' + e.message);
   }
-  this.emit('commit', this.source.element);
+  this.emit('commit', this.source.element, parts);
   this.source.element = null;
   this.dragging = false;
   this.cursor.style.display = 'none';
