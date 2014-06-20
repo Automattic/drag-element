@@ -115,7 +115,6 @@ Drag.prototype.cancel = function() {
 Drag.prototype.commit = function() {
   if (!this.dragging) return;
   if (!this.destination.element) return this.cancel();
-  this.emit('commit', this.source.element);
   try {
     var dest = this.destination.element;
     var el;
@@ -143,6 +142,7 @@ Drag.prototype.commit = function() {
   } catch (e) {
     debug('commit exception: ' + e.message);
   }
+  this.emit('commit', this.source.element);
   this.source.element = null;
   this.dragging = false;
   this.cursor.style.display = 'none';
