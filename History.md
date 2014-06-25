@@ -1,4 +1,9 @@
 
+0.3.0 / 2014-06-25 
+==================
+
+  * Add vertical and horizontal classes to the cursor.
+
 0.2.0 / 2014-06-20 
 ==================
 
