@@ -79,6 +79,7 @@ Drag.prototype.update = function(el, x, y) {
       this.cursor.style.left = (rect.left - drect.left) + 'px'; 
       this.cursor.style.height = '2px';
       this.cursor.style.width = rect.width + 'px';
+      this.cursor.className = 'drag-cursor horizontal';
     } else if (this.destination.mode == 'after') {
       if (el.nextSibling) {
         var nrect = el.nextElementSibling.getBoundingClientRect();
@@ -89,16 +90,19 @@ Drag.prototype.update = function(el, x, y) {
       this.cursor.style.left = (rect.left - drect.left) + 'px'; 
       this.cursor.style.height = '2px';
       this.cursor.style.width = rect.width + 'px';
+      this.cursor.className = 'drag-cursor horizontal';
     } else if (this.destination.mode == 'inside') {
       var rrect = this.destination.range.getBoundingClientRect();
       this.cursor.style.left = (rrect.left - drect.left) + 'px';
       this.cursor.style.top = (rrect.top - drect.top - 3) + 'px';
       this.cursor.style.width = '2px';
       this.cursor.style.height = rrect.height + 6 + 'px';
+      this.cursor.className = 'drag-cursor vertical';
     }
     this.cursor.style.display = '';
   } catch (e) {
     debug('update exception: ' + e.message);
+    this.cursor.className = 'drag-cursor';
     this.cursor.style.display = 'none';
   }
 }
