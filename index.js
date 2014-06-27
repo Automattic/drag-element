@@ -36,7 +36,7 @@ Drag.prototype.start = function(el, mode) {
   this.dragging = true;
   this.source.element = el;
   this.source.mode = mode || 'move';
-  this.container.style.cursor = 'move'; 
+  document.body.style.cursor = 'move'; 
   this.emit('start', el);
 }
 
@@ -113,7 +113,7 @@ Drag.prototype.cancel = function() {
   this.source.element = null;
   this.dragging = false;
   this.cursor.style.display = 'none';
-  this.container.style.cursor = ''; 
+  document.body.style.cursor = ''; 
 }
 
 Drag.prototype.commit = function() {
@@ -151,7 +151,7 @@ Drag.prototype.commit = function() {
   this.source.element = null;
   this.dragging = false;
   this.cursor.style.display = 'none';
-  this.container.style.cursor = ''; 
+  document.body.style.cursor = ''; 
 }
 
 module.exports = Drag;
