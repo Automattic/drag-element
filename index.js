@@ -56,10 +56,13 @@ Drag.prototype.update = function(el, x, y) {
         this.destination.mode = 'before';
       } else if (y >= rect.bottom - DROP_PADDING) {
         this.destination.mode = 'after';
-      } else if (range.startOffset == 0) {
-        this.destination.mode = 'before';
       } else {
-        this.destination.mode = 'inside';
+        var trect = range.getBoundingClientRect();
+        if (x < (trect.left + trect.right) / 2) {
+          this.destination.mode = 'before character';
+        } else {
+          this.destination.mode = 'after character';
+        }
       }
     } else {
       if (y < (rect.top + rect.bottom) / 2) {
@@ -91,9 +94,16 @@ Drag.prototype.update = function(el, x, y) {
       this.cursor.style.height = '2px';
       this.cursor.style.width = rect.width + 'px';
       this.cursor.className = 'drag-cursor horizontal';
-    } else if (this.destination.mode == 'inside') {
+    } else if (this.destination.mode == 'before character') {
       var rrect = this.destination.range.getBoundingClientRect();
       this.cursor.style.left = (rrect.left - drect.left) + 'px';
+      this.cursor.style.top = (rrect.top - drect.top - 3) + 'px';
+      this.cursor.style.width = '2px';
+      this.cursor.style.height = rrect.height + 6 + 'px';
+      this.cursor.className = 'drag-cursor vertical';
+    } else if (this.destination.mode == 'after character') {
+      var rrect = this.destination.range.getBoundingClientRect();
+      this.cursor.style.left = (rrect.right - drect.left) + 'px';
       this.cursor.style.top = (rrect.top - drect.top - 3) + 'px';
       this.cursor.style.width = '2px';
       this.cursor.style.height = rrect.height + 6 + 'px';
@@ -137,8 +147,16 @@ Drag.prototype.commit = function() {
       } else {
         this.container.appendChild(el);
       }
-    } else if (this.destination.mode == 'inside') {
+    } else if (this.destination.mode == 'before character') {
       parts = split(dest, this.destination.range);
+      this.container.insertBefore(parts[0], dest);
+      this.container.insertBefore(el, dest);
+      this.container.insertBefore(parts[1], dest);
+      this.container.removeChild(dest);
+    } else if (this.destination.mode == 'after character') {
+      var trange = this.destination.range.cloneRange();
+      trange.setStart(trange.startContainer, trange.startOffset + 1);
+      parts = split(dest, trange);
       this.container.insertBefore(parts[0], dest);
       this.container.insertBefore(el, dest);
       this.container.insertBefore(parts[1], dest);
