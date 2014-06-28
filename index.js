@@ -147,21 +147,22 @@ Drag.prototype.commit = function() {
       } else {
         this.container.appendChild(el);
       }
-    } else if (this.destination.mode == 'before character') {
-      parts = split(dest, this.destination.range);
-      this.container.insertBefore(parts[0], dest);
-      this.container.insertBefore(el, dest);
-      this.container.insertBefore(parts[1], dest);
-      this.container.removeChild(dest);
-    } else if (this.destination.mode == 'after character') {
+    } else {
       var trange = this.destination.range.cloneRange();
-      trange.setStart(trange.startContainer, trange.startOffset + 1);
+      if (this.destination.mode == 'after character') {
+        // shift to right
+        trange.setStart(trange.startContainer, trange.startOffset + 1);
+      }
       parts = split(dest, trange);
-      this.container.insertBefore(parts[0], dest);
+      if (parts[0].firstChild && (parts[0].firstChild.innerHTML || parts[0].firstChild.textContent)) {
+        this.container.insertBefore(parts[0], dest);
+      }
       this.container.insertBefore(el, dest);
-      this.container.insertBefore(parts[1], dest);
+      if (parts[1].firstChild && (parts[1].firstChild.innerHTML || parts[1].firstChild.textContent)) {
+        this.container.insertBefore(parts[1], dest);
+      }
       this.container.removeChild(dest);
-    }
+    } 
   } catch (e) {
     debug('commit exception: ' + e.message);
   }
