@@ -1,4 +1,11 @@
 
+0.4.0 / 2014-06-27 
+==================
+
+  * Simplify drop logic, avoiding empty elements.
+  * Handle before and after character cases.
+  * Use closest range instead of exact range.
+
 0.3.1 / 2014-06-26 
 ==================
 
