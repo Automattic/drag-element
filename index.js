@@ -1,4 +1,4 @@
-var atxy = require('range-at-xy');
+var ctoxy = require('range-closest-to-xy');
 var split = require('split-at-range');
 var Emitter = require('emitter');
 var debug = require('debug')('drag');
@@ -49,7 +49,7 @@ Drag.prototype.update = function(el, x, y) {
     }
     if (el == this.source.element) return;
     this.destination.element = el;
-    var range = this.destination.range = atxy(el, x, y);
+    var range = this.destination.range = ctoxy(el, x, y);
     var rect = el.getBoundingClientRect();
     if (range) {
       if (y <= rect.top + DROP_PADDING) {
