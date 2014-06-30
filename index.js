@@ -49,7 +49,9 @@ Drag.prototype.update = function(el, x, y) {
     }
     if (el == this.source.element) return;
     this.destination.element = el;
-    var range = this.destination.range = ctoxy(el, x, y);
+    var range = this.destination.range = ctoxy(el, x, y, function(range, rect) {
+      return (y >= rect.top) && (y < rect.bottom) 
+    });
     var rect = el.getBoundingClientRect();
     if (range) {
       if (y <= rect.top + DROP_PADDING) {

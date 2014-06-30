@@ -3,7 +3,7 @@
   "version": "0.4.0",
   "description": "Reorder elements via drag and drop",
   "dependencies": {
-    "component/range-closest-to-xy": "0.0.1",
+    "component/range-closest-to-xy": "0.1.0",
     "component/split-at-range": "0.0.2",
     "component/emitter": "1.1.2",
     "visionmedia/debug": "1.0.2"
