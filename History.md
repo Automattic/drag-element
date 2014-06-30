@@ -1,4 +1,11 @@
 
+0.4.1 / 2014-06-30 
+==================
+
+  * Include `component-` prefix in require.
+  * Add dependencies to package.json to allow npm install.
+  * Only consider ranges in the same line for drops.
+
 0.4.0 / 2014-06-27 
 ==================
 
