@@ -1,6 +1,6 @@
 var ctoxy = require('range-closest-to-xy');
 var split = require('split-at-range');
-var Emitter = require('emitter');
+var Emitter = require('component-emitter');
 var debug = require('debug')('drag');
 
 // Region in px on the top and on the bottom of elements excluded
