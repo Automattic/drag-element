@@ -2,6 +2,12 @@
   "name": "drag-element",
   "version": "0.4.0",
   "description": "Reorder elements via drag and drop",
+  "dependencies": {
+    "range-closest-to-xy": "0.1.0",
+    "split-at-range": "0.0.2",
+    "component-emitter": "1.1.2",
+    "debug": "1.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Automattic/drag-element.git"
