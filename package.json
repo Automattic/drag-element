@@ -2,7 +2,6 @@
   "name": "drag-element",
   "version": "0.4.1",
   "description": "Reorder elements via drag and drop",
-  "private": true,
   "dependencies": {
     "range-closest-to-xy": "0.1.0",
     "split-at-range": "0.0.2",
