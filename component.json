@@ -1,9 +1,9 @@
 {
   "name": "drag-element",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "description": "Reorder elements via drag and drop",
   "dependencies": {
-    "component/range-closest-to-xy": "0.1.0",
+    "component/range-closest-to-xy": "0.1.1",
     "component/split-at-range": "0.0.2",
     "component/emitter": "1.1.3",
     "visionmedia/debug": "1.0.4"
