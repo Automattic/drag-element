@@ -14,12 +14,14 @@ function Drag(container) {
   this.source = {
     element: null,
     mode: null
-  }
+  };
+
   this.destination = {
     element: null,
     range: null,
     mode: null
-  }
+  };
+
   this.display = document.createElement('div');
   this.display.style.position = 'absolute';
   this.cursor = document.createElement('div');
@@ -38,9 +40,9 @@ Drag.prototype.start = function(el, mode) {
   this.source.mode = mode || 'move';
   document.body.style.cursor = 'move'; 
   this.emit('start', el);
-}
+};
 
-Drag.prototype.update = function(el, x, y) {  
+Drag.prototype.update = function(el, x, y) {
   if (!this.dragging) return;
   if (el == this.container) return;
   try {
@@ -50,7 +52,7 @@ Drag.prototype.update = function(el, x, y) {
     if (el == this.source.element) return;
     this.destination.element = el;
     var range = this.destination.range = ctoxy(el, x, y, function(range, rect) {
-      return (y >= rect.top) && (y < rect.bottom) 
+      return (y >= rect.top) && (y < rect.bottom);
     });
     var rect = el.getBoundingClientRect();
     if (range) {
@@ -117,7 +119,7 @@ Drag.prototype.update = function(el, x, y) {
     this.cursor.className = 'drag-cursor';
     this.cursor.style.display = 'none';
   }
-}
+};
 
 Drag.prototype.cancel = function() {
   if (!this.dragging) return;
@@ -126,7 +128,7 @@ Drag.prototype.cancel = function() {
   this.dragging = false;
   this.cursor.style.display = 'none';
   document.body.style.cursor = ''; 
-}
+};
 
 Drag.prototype.commit = function() {
   var parts;
