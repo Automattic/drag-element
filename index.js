@@ -43,13 +43,22 @@ Drag.prototype.start = function(el, mode) {
 };
 
 Drag.prototype.update = function(el, x, y) {
-  if (!this.dragging) return;
-  if (el == this.container) return;
+  if (!this.dragging) {
+    return debug('no dragging');
+  }
+
+  if (el == this.container) {
+    return debug('el == this.container');
+  }
+
   try {
     while (el.parentNode != this.container) {
       el = el.parentNode; 
     }
-    if (el == this.source.element) return;
+    if (el == this.source.element) {
+      return debug('el == this.source.element');
+    }
+
     this.destination.element = el;
     var range = this.destination.range = ctoxy(el, x, y, function(range, rect) {
       return (y >= rect.top) && (y < rect.bottom);
@@ -132,8 +141,15 @@ Drag.prototype.cancel = function() {
 
 Drag.prototype.commit = function() {
   var parts;
-  if (!this.dragging) return;
-  if (!this.destination.element) return this.cancel();
+  if (!this.dragging) {
+    return debug('no dragging');
+  }
+
+  if (!this.destination.element) {
+    debug('no dragging element');
+    return this.cancel();
+  }
+
   try {
     var dest = this.destination.element;
     var el;
@@ -175,6 +191,6 @@ Drag.prototype.commit = function() {
   this.dragging = false;
   this.cursor.style.display = 'none';
   document.body.style.cursor = ''; 
-}
+};
 
 module.exports = Drag;
