@@ -1,6 +1,6 @@
 {
   "name": "drag-element",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Reorder elements via drag and drop",
   "dependencies": {
     "range-closest-to-xy": "0.1.1",
