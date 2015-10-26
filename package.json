@@ -1,11 +1,10 @@
 {
   "name": "drag-element",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Reorder elements via drag and drop",
   "dependencies": {
     "range-closest-to-xy": "0.1.1",
     "split-at-range": "0.0.2",
-    "component-emitter": "1.2.0",
     "debug": "2"
   },
   "license": "MIT",
