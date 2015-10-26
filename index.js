@@ -1,7 +1,8 @@
 var ctoxy = require('range-closest-to-xy');
 var split = require('split-at-range');
-var Emitter = require('component-emitter');
+var EventEmitter = require('events').EventEmitter;
 var debug = require('debug')('drag');
+var inherits = require('util').inherits;
 
 // Region in px on the top and on the bottom of elements excluded
 // from the 'inside' destination mode.
@@ -9,6 +10,8 @@ var debug = require('debug')('drag');
 var DROP_PADDING = 4;
 
 function Drag(container) {
+  EventEmitter.call(this);
+
   this.container = container;
   this.dragging = false;
   this.source = {
@@ -31,7 +34,7 @@ function Drag(container) {
   this.display.appendChild(this.cursor);
 }
 
-Emitter(Drag.prototype);
+inherits(Drag, EventEmitter);
 
 Drag.prototype.start = function(el, mode) {
   if (this.dragging) return;
